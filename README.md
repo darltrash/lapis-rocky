@@ -1,4 +1,4 @@
-# Lapis CentOS
+# Lapis Rocky
 
 This is a Docker image that you can use as a base to quickly set up and deploy
 web applications that use the Lapis framework.
@@ -20,18 +20,20 @@ web applications that use the Lapis framework.
 * luasec
 * mailgun
 * markdown
+* moonscript
+* lua-cjson
 
 ## Deploy
 
 ```sh
 docker run \
 -dti \
--v "/home/karai/lapis-test/data:/var/data" \
--v "/home/karai/lapis-test/www:/var/www" \
+-v "$CWD/data:/var/data" \
+-v "$CWD/www:/var/www" \
 -e LAPIS_ENV="development" \
 -p 8080:80 \
 --name lapis-test \
-karai17/lapis-centos:latest
+darltrash/lapis-rocky:latest
 ```
 
 ```sh

@@ -1,4 +1,4 @@
-version: '2.4'
+version: "2.4"
 
 services:
   www:
@@ -9,7 +9,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    image: karai17/lapis-centos:latest
+    image: darltrash/lapis-rocky:latest
     volumes:
       - ./www:/var/www
       - ./data:/var/data
