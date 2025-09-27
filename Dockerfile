@@ -16,11 +16,23 @@ VOLUME /var/www
 RUN yum -y install \
     epel-release \
     gcc \
+    wget \
+    unzip \
     openresty-openssl-devel \
     openssl-devel \
-    sqlite-devel \
     git \
     ; yum clean all
+
+# Build a more up-to-date version of SQLite3
+RUN wget https://www.sqlite.org/2025/sqlite-amalgamation-3500400.zip && \
+    unzip sqlite-amalgamation-3500400.zip && \
+    cd sqlite-amalgamation-3500400 && \
+    gcc -Os -s shell.c sqlite3.c -lpthread -ldl -lm -o sqlite3 && \
+    gcc -shared -fPIC sqlite3.c -lpthread -ldl -lm -o libsqlite3.so && \
+    mv sqlite3 /usr/local/bin/ && \
+    cp libsqlite3.so /usr/local/lib/ && \
+    cp sqlite3.h sqlite3ext.h /usr/local/include/ && \
+    cd .. && rm -rf sqlite-amalgamation-3500400*
 
 RUN yum config-manager --set-enabled powertools
 
@@ -39,7 +51,6 @@ RUN luarocks install luacov
 RUN luarocks install mailgun
 RUN luarocks install markdown
 RUN luarocks install moonscript
-RUN luarocks install lua-cjson
 
 # Entrypoint
 ADD docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
